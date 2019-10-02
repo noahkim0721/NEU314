@@ -31,3 +31,14 @@ function extractImg(filename)
     b = img[:,:,3]
     return r, g, b
 end
+println("Reset with git reset --mixed")
+# Create an image with mixed up R,G,B channels.
+image2 = zeros(360,640,3)
+temp = extractImg("el-capitan.png")
+image2[:,:,1] = temp[2]
+image2[:,:,2] = temp[3]
+image2[:,:,3] = temp[1]
+# Display the original image and the altered image side-by-side.
+figure(2); clf();  # start figure 1 and clear it
+subplot(1,2,1); imshow(img); axis("off"), title("Original image")
+subplot(1,2,2); imshow(image2); axis("off"), title("RGB altered image")
