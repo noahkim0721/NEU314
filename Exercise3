@@ -1,0 +1,33 @@
+# Setup
+include("standard_start.jl")
+using PyPlot
+using JLD
+using Statistics
+# Load and display the picture
+img = imread("el-capitan.png")
+imshow(img)
+size(img)
+
+"""
+extractImg(filename)
+
+Given the string of a filename of an image, load and display the image, and
+return red, green, and blue channels separately
+
+Args:
+   filename (str): the filename of an image
+
+Returns:
+   r (float): a matrix representing the red channel
+   g (float): a matrix representing the green channel
+   b (float): a matrix representing the blue channel
+"""
+
+function extractImg(filename)
+    img = imread(filename)
+    imshow(img)
+    r = img[:,:,1]
+    g = img[:,:,2]
+    b = img[:,:,3]
+    return r, g, b
+end
