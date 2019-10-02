@@ -57,7 +57,7 @@ Args:
 Returns:
    r (float): a matrix of the shifted image
 """
-function circulateImg!(filename, pixels)
+function circulateImg(filename, pixels)
     img = copy(imread(filename))
     img_r = img[:,:,1]
     nrows = size(img_r)[1]
@@ -81,7 +81,7 @@ function circulateImg!(filename, pixels)
 end
 
 # Shift up the red channel by 180 pixels.
-img_shifted = circulateImg!("el-capitan.png", 180)
+img_shifted = circulateImg("el-capitan.png", 180)
 # Display both the original image and the shifted image side-by-side.
 figure(3); clf();
 subplot(1,2,1); imshow(img); axis("off"), title("Original image")
