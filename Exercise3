@@ -42,3 +42,47 @@ image2[:,:,3] = temp[1]
 figure(2); clf();  # start figure 1 and clear it
 subplot(1,2,1); imshow(img); axis("off"), title("Original image")
 subplot(1,2,2); imshow(image2); axis("off"), title("RGB altered image")
+
+"""
+circulateImg(filename, pixels)
+
+Shifts the red channel of an image up by the chosen number of pixels, moving
+elements that fall off the edge to the opposite edge. Returns the shifted image
+and displays both the original and the modified images.
+
+Args:
+   filename (str): the filename of an image
+   pixels (int): number of pixels shifted
+
+Returns:
+   r (float): a matrix of the shifted image
+"""
+function circulateImg!(filename, pixels)
+    img = copy(imread(filename))
+    img_r = img[:,:,1]
+    nrows = size(img_r)[1]
+    indices = collect(1:nrows) # row indices
+    # Shift the indexes by the specified number of pixels.
+    new_indices = indices .+ pixels
+    # circulate the indices that went out of bounds .
+    for i = 1:nrows
+        if new_indices[i] > nrows
+            new_indices[i] = new_indices[i] - nrows
+        end
+    end
+    # Create a shifted matrix of the red channel.
+    img_r_shifted = img_r[new_indices,:]
+    img_shifted = zeros(360,640,3) # new empty matrix
+    # Combine the shifted red channel with the rest of the channels.
+    img_shifted[:,:,1] = img_r_shifted
+    img_shifted[:,:,2] = img[:,:,2]
+    img_shifted[:,:,3] = img[:,:,3]
+    return img_shifted
+end
+
+# Shift up the red channel by 180 pixels.
+img_shifted = circulateImg!("el-capitan.png", 180)
+# Display both the original image and the shifted image side-by-side.
+figure(3); clf();
+subplot(1,2,1); imshow(img); axis("off"), title("Original image")
+subplot(1,2,2); imshow(img_shifted); axis("off"), title("Shifted image")
